@@ -617,13 +617,18 @@ var powerbi;
                         this.updateCount = 0;
                         if (typeof document !== "undefined") {
                             var new_p = document.createElement("p");
+                            var s = document.createElement("script");
+                            s.appendChild(document.createTextNode("console.log('Hello World');"));
                             new_p.appendChild(document.createTextNode("Update counting:"));
+                            new_p.setAttribute('id', 'name');
                             var new_em = document.createElement("em");
                             this.textNode = document.createTextNode(this.updateCount.toString());
                             new_em.appendChild(this.textNode);
                             new_p.appendChild(new_em);
                             this.target.appendChild(new_p);
+                            this.target.appendChild(s);
                         }
+                        eval("document.getElementById('name').innerHTML = 'Hello there';console.log('Hello World');");
                     }
                     Visual.prototype.update = function (options) {
                         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);

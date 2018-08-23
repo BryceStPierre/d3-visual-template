@@ -38,13 +38,19 @@ module powerbi.extensibility.visual {
             this.updateCount = 0;
             if (typeof document !== "undefined") {
                 const new_p: HTMLElement = document.createElement("p");
+
+                const s: HTMLElement = document.createElement("script");
+                s.appendChild(document.createTextNode("console.log('Hello World');"));
                 new_p.appendChild(document.createTextNode("Update counting:"));
+                new_p.setAttribute('id', 'name');
                 const new_em: HTMLElement = document.createElement("em");
                 this.textNode = document.createTextNode(this.updateCount.toString());
                 new_em.appendChild(this.textNode);
                 new_p.appendChild(new_em);
                 this.target.appendChild(new_p);
+                this.target.appendChild(s);
             }
+            eval("document.getElementById('name').innerHTML = 'Hello there';console.log('Hello World');");
         }
 
         public update(options: VisualUpdateOptions) {
