@@ -24,7 +24,7 @@
  *  THE SOFTWARE.
  */
 
-module powerbi.extensibility.visual {
+module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A  {
     "use strict";
     export class Visual implements IVisual {
         private target: HTMLElement;
