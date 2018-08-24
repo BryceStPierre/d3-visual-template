@@ -28,11 +28,6 @@ if (fs.readdirSync(script).length === 0) {
     process.exit(1);
 }
 
-
-
-
-
-
 // TODO:
 // Fill in the generate logic.
 
