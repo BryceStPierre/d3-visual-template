@@ -1,0 +1,26 @@
+{
+  "name": "d3-visual-template",
+  "version": "1.0.0",
+  "description": "A generic Power BI custom visual template for rendering a D3.js data visualization.",
+  "main": "",
+  "scripts": {
+    "prep": "node prep",
+    "start": "node generate && cd d3VisualTemplate && pbiviz start",
+    "build": "node generate && cd d3VisualTemplate && pbiviz package && cd .. && node copy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryceStPierre/d3-visual-template.git"
+  },
+  "keywords": [],
+  "author": "Bryce St. Pierre",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BryceStPierre/d3-visual-template/issues"
+  },
+  "homepage": "https://github.com/BryceStPierre/d3-visual-template#readme",
+  "dependencies": {
+    "clean-css": "^4.2.1",
+    "uglify-js": "^3.4.8"
+  }
+}
