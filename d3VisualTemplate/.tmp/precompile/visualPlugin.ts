@@ -1,6 +1,6 @@
 module powerbi.visuals.plugins {
-    export var d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A = {
-        name: 'd3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A',
+    export var d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A_DEBUG = {
+        name: 'd3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A_DEBUG',
         displayName: 'D3VisualTemplate',
         class: 'Visual',
         version: '1.0.0',
