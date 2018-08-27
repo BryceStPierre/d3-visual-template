@@ -40,8 +40,8 @@ try {
 // Append code to d3.ts.
 fs.appendFileSync(file, 'module powerbi.extensibility.utils {\n\n', 'utf8');
 fs.appendFileSync(file, '\texport module D3 {\n\n', 'utf8');
-fs.appendFileSync(file, '\t\texport class Content {\n', 'utf8');
-fs.appendFileSync(file, '\t\t\tpublic static deps: string = ', 'utf8');
+// fs.appendFileSync(file, '\t\texport class Content {\n', 'utf8');
+fs.appendFileSync(file, '\t\texport const deps = ', 'utf8');
 
 // Append dependency code to d3.ts.
 fs.readdirSync(dependencies).forEach(d => {
@@ -50,18 +50,18 @@ fs.readdirSync(dependencies).forEach(d => {
 });
 
 // Append main D3 body to d3.ts.
-fs.appendFileSync(file, ';\n\t\t\tpublic static script: string = ', 'utf8');
+fs.appendFileSync(file, ';\n\t\texport const script = ', 'utf8');
 fs.readdirSync(script).forEach(s => {
     var code = minify(script, s);
     fs.appendFileSync(file, JSON.stringify(code), 'utf8');
 });
 
 // Append style code to d3.ts.
-fs.appendFileSync(file, ';\n\t\t\tpublic static style: string = ', 'utf8');
+fs.appendFileSync(file, ';\n\t\texport const style = ', 'utf8');
 fs.readdirSync(style).forEach(s => {
     var code = css(style, s);
     fs.appendFileSync(file, JSON.stringify(code), 'utf8');
 });
-fs.appendFileSync(file, ';\n\t\t}\n\t}\n}\n', 'utf8');
+fs.appendFileSync(file, ';\n\t}\n}\n', 'utf8');
 
 console.log('Generate script ran successfully.\n');

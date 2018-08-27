@@ -25,6 +25,11 @@
  */
 
 module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A  {
+
+
+    // d3.ts
+    import Code = powerbi.extensibility.utils.D3;
+
     "use strict";
     export class Visual implements IVisual {
         private target: HTMLElement;
@@ -51,6 +56,10 @@ module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4
                 this.target.appendChild(s);
             }
             eval("document.getElementById('name').innerHTML = 'Hello there';console.log('Hello World');");
+
+            // console.log(Code.deps);
+            // console.log(Code.script);
+            // console.log(Code.style);
         }
 
         public update(options: VisualUpdateOptions) {
