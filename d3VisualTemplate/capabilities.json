@@ -3,7 +3,7 @@
         {
             "displayName": "Category Data",
             "name": "category",
-            "kind": "Grouping"
+            "kind": "GroupingOrMeasure"
         },
         {
             "displayName": "Measure Data",
@@ -60,25 +60,16 @@
     },
     "dataViewMappings": [
         {
-            "categorical": {
-                "categories": {
-                    "for": {
-                        "in": "category"
-                    },
-                    "dataReductionAlgorithm": {
-                        "top": {}
-                    }
-                },
-                "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "measure"
-                            }
-                        }
-                    ]
-                }
+            "table": {
+                "rows": {
+                   "select": [
+                       { "for": { "in": "category" } },
+                       { "for": { "in": "measure" } }
+                   ],
+                   "dataReductionAlgorithm": { "top": { "count": 30000 } }
+               },
+               "rowCount": { "preferred": { "min": 2, "max": 16000 }, "supported": { "min": 1, "max": 30000 } }
             }
-        }
+         }
     ]
 }
