@@ -41,27 +41,27 @@ module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4
         private target: HTMLElement;
         // private updateCount: number;
         private settings: VisualSettings;
-        private textNode: Text;
+        // private textNode: Text;
 
         constructor(options: VisualConstructorOptions) {
-            console.log('Visual constructor', options);
+            // console.log('Visual constructor', options);
             this.target = options.element;
             // this.updateCount = 0;
 
             if (typeof document !== "undefined") {
-                const new_p: HTMLElement = document.createElement("p");
+                // const new_p: HTMLElement = document.createElement("p");
                 const div: HTMLElement = document.createElement("div");
                 div.setAttribute('id', 'container');
 
                 // const s: HTMLElement = document.createElement("script");
                 // s.appendChild(document.createTextNode("console.log('Hello World');"));
-                new_p.appendChild(document.createTextNode("Update counting:"));
-                new_p.setAttribute('id', 'name');
-                const new_em: HTMLElement = document.createElement("em");
-                this.textNode = document.createTextNode("this.updateCount.toString()");
-                new_em.appendChild(this.textNode);
-                new_p.appendChild(new_em);
-                this.target.appendChild(new_p);
+                // new_p.appendChild(document.createTextNode("Update counting:"));
+                // new_p.setAttribute('id', 'name');
+                // const new_em: HTMLElement = document.createElement("em");
+                // this.textNode = document.createTextNode("this.updateCount.toString()");
+                // new_em.appendChild(this.textNode);
+                // new_p.appendChild(new_em);
+                // this.target.appendChild(new_p);
                 this.target.appendChild(div);
                 // this.target.appendChild(s);
             }
@@ -97,11 +97,10 @@ module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4
 
         // Extract metadata, to generalize access to data.
         private static extractMetadata (dataView: DataView): Metadata {
-            var meta = {
+            let meta = {
                 measures: [],
                 categories: []
             };
-
             meta.measures = dataView.metadata.columns.filter(c => c.roles.measure).map(m => m.displayName);
             meta.categories = dataView.metadata.columns.filter(c => c.roles.category).map(c => c.displayName);
 
@@ -110,7 +109,7 @@ module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4
 
         // Transform data into an array of objects, suitable for use with D3.
         private static extractData (dataView: DataView) {
-            var data = [];
+            let data = [];
             const columnNames = dataView.metadata.columns.map(c => c.displayName);
 
             dataView.table.rows.forEach(row => {
@@ -122,6 +121,17 @@ module powerbi.extensibility.visual.d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4
             });
 
             return data;
+        }
+
+        private createDataBridge (dataView: DataView, width: number, height: number): string {
+            let code = `var pbi = {width:${width},height:${height},`;
+            code += `render:function(mapping,callback){var meta=${JSON.stringify(Visual.extractMetadata(dataView))};`;
+            code += `var data=${JSON.stringify(Visual.extractData(dataView))};`
+            
+
+
+            console.log(code);
+            return code;
         }
 
 

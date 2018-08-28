@@ -629,23 +629,24 @@ var powerbi;
             (function (d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A) {
                 "use strict";
                 var Visual = (function () {
+                    // private textNode: Text;
                     function Visual(options) {
-                        console.log('Visual constructor', options);
+                        // console.log('Visual constructor', options);
                         this.target = options.element;
                         // this.updateCount = 0;
                         if (typeof document !== "undefined") {
-                            var new_p = document.createElement("p");
+                            // const new_p: HTMLElement = document.createElement("p");
                             var div = document.createElement("div");
                             div.setAttribute('id', 'container');
                             // const s: HTMLElement = document.createElement("script");
                             // s.appendChild(document.createTextNode("console.log('Hello World');"));
-                            new_p.appendChild(document.createTextNode("Update counting:"));
-                            new_p.setAttribute('id', 'name');
-                            var new_em = document.createElement("em");
-                            this.textNode = document.createTextNode("this.updateCount.toString()");
-                            new_em.appendChild(this.textNode);
-                            new_p.appendChild(new_em);
-                            this.target.appendChild(new_p);
+                            // new_p.appendChild(document.createTextNode("Update counting:"));
+                            // new_p.setAttribute('id', 'name');
+                            // const new_em: HTMLElement = document.createElement("em");
+                            // this.textNode = document.createTextNode("this.updateCount.toString()");
+                            // new_em.appendChild(this.textNode);
+                            // new_p.appendChild(new_em);
+                            // this.target.appendChild(new_p);
                             this.target.appendChild(div);
                             // this.target.appendChild(s);
                         }
@@ -692,6 +693,13 @@ var powerbi;
                             data.push(datum);
                         });
                         return data;
+                    };
+                    Visual.prototype.createDataBridge = function (dataView, width, height) {
+                        var code = "var pbi = {width:" + width + ",height:" + height + ",";
+                        code += "render:function(mapping,callback){var meta=" + JSON.stringify(Visual.extractMetadata(dataView)) + ";";
+                        code += "var data=" + JSON.stringify(Visual.extractData(dataView)) + ";";
+                        console.log(code);
+                        return code;
                     };
                     Visual.parseSettings = function (dataView) {
                         return d3VisualTemplate34F9EC7F64FF4B919F604D56CDE4B51A.VisualSettings.parse(dataView);
