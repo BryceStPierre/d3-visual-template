@@ -50,6 +50,10 @@ module powerbi.extensibility.visual {
 
             if (typeof document !== "undefined") {
                 // const new_p: HTMLElement = document.createElement("p");
+
+                const style: HTMLElement = document.createElement("style");
+                style.innerText = Code.style;
+
                 const div: HTMLElement = document.createElement("div");
                 div.setAttribute('id', 'container');
 
@@ -62,23 +66,11 @@ module powerbi.extensibility.visual {
                 // new_em.appendChild(this.textNode);
                 // new_p.appendChild(new_em);
                 // this.target.appendChild(new_p);
+                this.target.appendChild(style);
                 this.target.appendChild(div);
                 // this.target.appendChild(s);
             }
-
-            // This line establishes d3 object from d3.js into the global window scope of javascript. We had to cast it to be able to use it.
-            // https://medium.com/@jatin7gupta/adding-external-js-libraries-powerbi-custom-visuals-9b0b9a7d4ae
-            var d3 = (<any>window).d3;
-
-            var testD3code = "var svg = d3.select('#container').append('svg').attr('width',200).attr('height',300);svg.append('rect').attr('width', 50).attr('height',50).attr('fill','blue');";
-
-            // eval("document.getElementById('name').innerHTML = 'Hello there';console.log('Hello World');");
-
-            eval(testD3code);
-
-            // console.log(Code.deps);
-            // console.log(Code.script);
-            // console.log(Code.style);
+        
         }
 
         public update(options: VisualUpdateOptions) {
@@ -88,14 +80,82 @@ module powerbi.extensibility.visual {
             //     this.textNode.textContent = (this.updateCount++).toString();
             // }
 
-            if (options && options.dataViews && options.dataViews[0]) {
-                console.log(Visual.extractMetadata(options.dataViews[0]));
-            }
+            if (options && options.dataViews && options.dataViews[0])
+                this.render(options.dataViews[0], options.viewport.width, options.viewport.height);
+        }
 
-            console.log(Visual.extractData(options.dataViews[0]));
+        private render (dataView: DataView, width: number, height: number) {
+
+            //console.log(this.createBridgeCode(dataView, width, height));
+
+            // This line establishes d3 object from d3.js into the global window scope of javascript. We had to cast it to be able to use it.
+            // https://medium.com/@jatin7gupta/adding-external-js-libraries-powerbi-custom-visuals-9b0b9a7d4ae
+            // var d3 = (<any>window).d3;
+
+            var code = Code.lib + this.createBridgeCode(dataView, width, height);
+            code += "console.log('Dependencies running...');" + Code.deps;
+            code += "console.log('Main body running...');" + Code.script;
+
+            // var code = "var svg = d3.select(\"#container\").append(\"svg\").attr(\"width\",200).attr(\"height\",300);svg.append(\"rect\").attr(\"width\", 50).attr(\"height\",50).attr(\"fill\",\"blue\");";
+
+            // eval("document.getElementById('name').innerHTML = 'Hello there';console.log('Hello World');");
+
+            // const d3Script: HTMLElement = document.createElement("script");
+            // d3Script.setAttribute('src', 'https://d3js.org/d3.v3.min.js');
+            // this.target.appendChild(d3Script);
+
+            const s: HTMLElement = document.createElement("script");
+            s.innerText = code;
+            this.target.appendChild(s);
+            //eval(code);
+
+            // console.log(Code.deps);
+            // console.log(Code.script);
+            // console.log(Code.style);
+
+        }
+
+        // Creates JavaScript code, allowing D3 code to access the data, and viewport properties.
+        // Specification:
+
+        // var pbi = {
+        //     width: 0,
+        //     height: 0,
+        //     render: function(mapping, callback) {
+        //         var meta = {
+        //             "measures": [""],
+        //             "categories": [""]
+        //         };
+        //         var data = [{}];
+                             
+        //         if (arguments.length < 2) {
+        //             callback = mapping;
+        //             mapping = null;
+        //         } else {
+        //             data = data.map(function(d) {
+        //                 return mapping(d);
+        //             });
+        //         }
+        //         callback(data, meta);
+        //     }
+        // };
+        private createBridgeCode (dataView: DataView, width: number, height: number): string {
+            let code = `var pbi={width:${width},height:${height},render:function(mapping,callback){`;
+            code += `var meta=${JSON.stringify(Visual.extractMetadata(dataView))};`;
+            code += `var data=${JSON.stringify(Visual.extractData(dataView))};`
+            code += `if (arguments.length < 2) {callback=mapping;mapping=null;} else {data=data.map(function(d){return mapping(d);});}`
+            code += `callback(data,meta);}};`;
+
+            return code;
         }
 
         // Extract metadata, to generalize access to data.
+        // Example:
+
+        // var meta = {
+        //      "measures": ["Sales"],
+        //      "categories": ["Size", "Color"]
+        // };
         private static extractMetadata (dataView: DataView): Metadata {
             let meta = {
                 measures: [],
@@ -122,18 +182,6 @@ module powerbi.extensibility.visual {
 
             return data;
         }
-
-        private createDataBridge (dataView: DataView, width: number, height: number): string {
-            let code = `var pbi = {width:${width},height:${height},`;
-            code += `render:function(mapping,callback){var meta=${JSON.stringify(Visual.extractMetadata(dataView))};`;
-            code += `var data=${JSON.stringify(Visual.extractData(dataView))};`
-            
-
-
-            console.log(code);
-            return code;
-        }
-
 
         private static parseSettings(dataView: DataView): VisualSettings {
             return VisualSettings.parse(dataView) as VisualSettings;

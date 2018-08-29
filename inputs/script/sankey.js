@@ -11,13 +11,14 @@ var width = pbi.width,
 //	dispatch = this.dispatch();
 
 //Prepare canvas with width and height of container.
-var vis = d3.select("#chart")
-	.attr("width", width)
-	.attr("height", height)
-	.append("g")
-	.attr("class", "vis")
+var vis = d3.select("#container")
+	.append("svg")
 	.attr("width", width)
 	.attr("height", height);
+	// .append("g")
+	// .attr("class", "vis")
+	// .attr("width", width)
+	// .attr("height", height);
 
 //Adjust width and height with margins.
 width = width - margin.left - margin.right;
@@ -36,9 +37,13 @@ var formatNumber = d3.format(",.0f"), // zero decimal places
 	format = function(d) { return formatNumber(d) + " " + units; },
 	color = d3.scale.category20();
 
+console.log('Added svg.');
+
 // append the svg canvas to the page
 var svg = vis.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+console.log('Added g.');
 
 //set up graph in same style as original example but empty
 var graph = {
@@ -49,37 +54,38 @@ var uniqueNodes = [];
 
 //GENERALIZE DATA COLUMN VALUES.
 
-var accessor = function (d) {
-	var columnNames = [];
-	var x;
-	for (x in d) {
-		columnNames.push(x);
-	}
+// var accessor = function (d) {
+// 	var columnNames = [];
+// 	var x;
+// 	for (x in d) {
+// 		columnNames.push(x);
+// 	}
 	
-	return {
-		source: d[columnNames[0]],
-		target: d[columnNames[1]],
-		amount: +d[columnNames[2]]
-	};
-};
+// 	return {
+// 		source: d[columnNames[0]],
+// 		target: d[columnNames[1]],
+// 		amount: +d[columnNames[2]]
+// 	};
+// };
 
-pbi.dsv(accessor, function (data) {
+// pbi.dsv(accessor, function (data, meta) {
+pbi.render(function (data, meta) {
 	data.forEach(function(d) {
-		var value = d.amount;
+		var value = +d[meta.measures[0]];
 		if (value !== 0) {
 			graph.nodes.push({
-				"name": d.source		//d.source
+				"name": d[meta.categories[0]]	//d.source
 			});
 			graph.nodes.push({
-				"name": d.target		//d.target
+				"name": d[meta.categories[1]]		//d.target
 			});
 			graph.links.push({
-				"source": d.source,		//d.source
-				"target": d.target,		//d.target
-				"value": value			//+d.value
+				"source": d[meta.categories[0]],		//d.source
+				"target": d[meta.categories[1]],		//d.target
+				"value": value						//+d.value
 			});
-			if (uniqueNodes.indexOf(d.source) === -1) { uniqueNodes.push(d.source); }
-			if (uniqueNodes.indexOf(d.target) === -1) { uniqueNodes.push(d.target); }
+			if (uniqueNodes.indexOf(d[meta.categories[0]]) === -1) { uniqueNodes.push(d[meta.categories[0]]); }
+			if (uniqueNodes.indexOf(d[meta.categories[1]]) === -1) { uniqueNodes.push(d[meta.categories[1]]); }
 		}
 	});
 });
