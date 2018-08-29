@@ -14,5 +14,7 @@ To begin supplying JavaScript and CSS files, run this command and follow the ins
 To start the visual in development mode (assuming [everything is configured](https://docs.microsoft.com/en-us/power-bi/service-custom-visuals-getting-started-with-developer-tools "Getting Started with Developer Tools")):
 `npm start`
 
-To build the visual and create the .pbiviz file within `/dist`:
+To build the visual and download the .pbiviz file within `/build`:
 `npm run build`
+
+## Scripts
