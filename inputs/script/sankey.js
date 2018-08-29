@@ -37,13 +37,9 @@ var formatNumber = d3.format(",.0f"), // zero decimal places
 	format = function(d) { return formatNumber(d) + " " + units; },
 	color = d3.scale.category20();
 
-console.log('Added svg.');
-
 // append the svg canvas to the page
 var svg = vis.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-console.log('Added g.');
 
 //set up graph in same style as original example but empty
 var graph = {

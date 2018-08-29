@@ -1,20 +1,10 @@
-const fs = require('fs');
+const createFolder = require('./utils/createFolder');
 
 // Folder paths.
 const inputs = './inputs/';
 const dependencies = './inputs/dependencies/';
 const script = './inputs/script/';
 const style = './inputs/style/';
-
-// Creates a folder, if it does not exist.
-function createFolder (path) {
-    try {
-        fs.accessSync(path, fs.constants.F_OK);
-    } catch (err) {
-        fs.mkdirSync(path);
-        console.log(`Created ${path.replace('.','')}.`);
-    }
-}
 
 console.log('\nRunning prep script...\n');
 

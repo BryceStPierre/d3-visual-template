@@ -1,9 +1,33 @@
-console.log('Running copy script...');
+const fs = require('fs');
+const path = require('path');
 
-// TODO: 
-// Create a folder called '/build', if it does not exist.
-// Log the relevant status messages.
+const createFolder = require('./utils/createFolder');
 
-// TODO:
-// If it exists, copy the VISUAL.pbiviz file from the '/d3VisualTemplate/dist' into '/build'.
-// Log the relevant status messages.
+const original = './d3VisualTemplate/dist/d3VisualTemplate.pbiviz';
+const build = './build/';
+const filename = 'd3viz.pbiviz';
+
+console.log('\nRunning copy script...');
+
+// Create build folder if it does not exist.
+createFolder('./build');
+
+// Ensure that the new build file exists.
+try {
+    fs.accessSync(original, fs.constants.F_OK);
+} catch (err) {
+    console.log('Oops, the packaged .pbiviz file does not exist.');
+    process.exit(1);
+}
+
+// Delete previous build if it exists.
+try {
+    fs.accessSync(filename, fs.constants.F_OK);
+    fs.unlinkSync(filename);
+} catch (err) { }
+
+// Copy .pbiviz file into ./build folder.
+fs.copyFileSync(original, path.join(build, filename));
+
+console.log('\nCopy script ran successfully.');
+console.log('\nFind the custom visual in `./build`.\n');

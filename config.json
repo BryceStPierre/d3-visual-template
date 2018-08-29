@@ -1,0 +1,6 @@
+{
+    "dependencies": [
+        { "name": "d3.v3.min.js" },
+        { "name": "d3-sankey.js", "shrink": true }
+    ]
+}
